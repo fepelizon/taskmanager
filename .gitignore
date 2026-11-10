@@ -2,6 +2,7 @@ backend/target/
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
+frontend/coverage/
 infra/.env
 
 *.class
@@ -27,5 +28,6 @@ infra/.env
 .sts4-cache
 
 build/
-out/
+/out/
+backend/out/
 
