@@ -68,14 +68,14 @@ class KafkaTaskEventPublisherTest {
 
     @Test
     void publishShouldEscapeQuotesAndBackslashes() { // A função publish deve escapar aspas e barras invertidas
-        // Ação: título com aspas -> Comprar "pão"  /  descrição com barra -> C:\temp (no código Java, as aspas e a barra dentro do texto são escritas como \" e \\)
-        publisher.publishTaskCreated(new Task(1L, "Comprar \"pão\"", "C:\\temp", TaskStatus.PENDING, CREATED_AT));
+        // Ação: título com aspas -> Revisar contrato "ABC"  /  descrição com barra -> C:\temp (no código Java, as aspas e a barra dentro do texto são escritas como \" e \\)
+        publisher.publishTaskCreated(new Task(1L, "Revisar contrato \"ABC\"", "C:\\temp", TaskStatus.PENDING, CREATED_AT));
 
         // Verificação
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         verify(kafkaTemplate).send(eq("task-events"), eq("1"), captor.capture());
         String message = captor.getValue();
-        assertThat(message).contains("\"title\":\"Comprar \\\"pão\\\"\""); // No JSON fica: "title":"Comprar \"pão\""
+        assertThat(message).contains("\"title\":\"Revisar contrato \\\"ABC\\\"\""); // No JSON fica: "title":"Revisar contrato \"ABC\""
         assertThat(message).contains("\"description\":\"C:\\\\temp\""); // No JSON fica: "description":"C:\\temp"
     }
 
